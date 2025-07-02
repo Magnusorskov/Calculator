@@ -4,9 +4,46 @@ body {
 }
 .container {
     display: flex;
-    border: black solid 5px;
-    border-radius: 15px;
+    flex-direction: column;
+    background: #1b1107;
+    border-radius: 30px;
     width: 500px;
     height: 800px;
     align-self: center;
+}
+
+.display {
+    background: #3a2714;
+    width: 100%;
+    height: 300px;
+    color: #ffffff;
+    border-radius: 30px;
+    text-align: right;
+
+}
+
+.button-container {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    box-sizing: border-box;
+    padding: 10px;
+    justify-content: center;
+    align-content: center;
+}
+
+.button {
+    border-radius: 50%;
+    color: white;
+    margin: 7px;
+    flex: 1;
+
+}
+
+.digit {
+    background: #261a0c;
+}
+.operator {
+    background: #5b4301;
 }
