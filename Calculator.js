@@ -10,3 +10,7 @@ function subtract(numberOne, numberTwo) {
 function multiply(numberOne, numberTwo) {
     return numberOne - numberTwo;
 };
+
+function divide(numberOne, numberTwo) {
+    return numberOne / numberTwo;
+};
