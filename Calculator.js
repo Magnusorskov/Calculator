@@ -1,3 +1,9 @@
+let numberOne;
+let numberTwo;
+let operator;
+
+
+
 function add(numberOne, numberTwo) {
     return numberOne + numberTwo;
 }
