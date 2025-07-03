@@ -1,9 +1,9 @@
 let cState = {
     numberOne: "",
     numberTwo: "",
-    operator: null,
+    operator: "",
     displayString: "",
-    result: null
+    result: ""
 };
 const buttons = document.querySelectorAll('button');
 const stateHistory = [];
@@ -18,13 +18,16 @@ function subtract(numberOne, numberTwo) {
 
 
 function multiply(numberOne, numberTwo) {
-    if (numberTwo === 0) {
-        return "Error";
+    if (numberTwo === 0 || numberOne === 0) {
+        return 0;
     }
     return numberOne * numberTwo;
 }
 
 function divide(numberOne, numberTwo) {
+    if (numberTwo === 0) {
+        return "ERROR"
+    }
     return numberOne / numberTwo;
 }
 
@@ -39,46 +42,63 @@ function operate(numberOne, numberTwo, operator) {
         case "-":
             numberToReturn = subtract(parsedNum1, parsedNum2);
             break;
-        case "*":
+        case "x":
             numberToReturn = multiply(parsedNum1, parsedNum2);
             break;
         case "÷":
             numberToReturn = divide(parsedNum1, parsedNum2);
             break;
     }
-    return numberToReturn.toFixed(2);
+    if (typeof numberToReturn === "string") {
+        return numberToReturn;
+    }
+    if (numberToReturn % 1 !== 0) {
+        return parseFloat(numberToReturn.toFixed(10).toString());
+    } else {
+        return numberToReturn;
+    }
+
 }
 
 
 function processCalculatorInput(string) {
     const digits = "0123456789.";
     const areNumbersFilled = cState.numberOne !== "" && cState.numberTwo !== "";
-
+    if (cState.numberOne === "ERROR") {
+        allClear();
+    }
 
     function updateCalcStateOnResult() {
         if (areNumbersFilled) {
             cState.result = operate(cState.numberOne, cState.numberTwo, cState.operator)
-            cState.numberOne = "";
+            cState.numberOne = cState.result;
             cState.numberTwo = "";
-            cState.operator = null;
+            cState.operator = "";
         }
     }
 
     function updateCalcStateOnDigit() {
-        if (cState.result !== null && cState.operator === null) {
-            cState.result = null;
-            cState.numberOne += string;
-        } else if (cState.operator === null) {
-            cState.numberOne += string;
+        const checkForPeriod = (stringToAdd, stringToManipulate) => {
+            if (stringToAdd === ".") {
+                if (!stringToManipulate.includes(".")) {
+                    return stringToManipulate + stringToAdd;
+                } else return stringToManipulate;
+            } else return stringToManipulate + stringToAdd;
+        }
+
+        if (cState.result !== "" && cState.operator === "") {
+            cState.result = "";
+            cState.numberOne = checkForPeriod(string, cState.numberOne)
+        } else if (cState.operator === "") {
+            cState.numberOne = checkForPeriod(string, cState.numberOne)
         } else {
-            cState.numberTwo += string;
+            cState.numberTwo = checkForPeriod(string, cState.numberTwo)
         }
     }
 
     function updateCalcStateOnOperator() {
         if (areNumbersFilled) {
-            cState.result = operate(cState.numberOne, cState.numberTwo, cState.operator);
-            cState.numberOne = cState.result;
+            cState.numberOne = operate(cState.numberOne, cState.numberTwo, cState.operator);
             cState.operator = string;
             cState.numberTwo = "";
         } else if (cState.numberOne !== "") {
@@ -104,8 +124,8 @@ function processCalculatorInput(string) {
 function allClear() {
     cState.numberOne = "";
     cState.numberTwo = "";
-    cState.operator = null;
-    cState.result = null;
+    cState.operator = "";
+    cState.result = "";
     updateDisplay();
     saveState();
 }
@@ -122,17 +142,7 @@ function undo() {
 }
 
 function updateDisplay() {
-    if (cState.result !== null) {
-        cState.displayString = cState.result;
-    } else if (cState.numberTwo !== "") {
-        cState.displayString = cState.numberTwo;
-    } else if (cState.operator !== null) {
-        cState.displayString = "";
-    } else if (cState.numberOne !== "") {
-        cState.displayString = cState.numberOne;
-    } else {
-        cState.displayString = "";
-    }
+    cState.displayString = `${cState.numberOne} ${cState.operator} ${cState.numberTwo}`
     const display = document.querySelector(".display");
     display.textContent = cState.displayString;
 }
