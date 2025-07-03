@@ -28,16 +28,16 @@ body {
 
 }
 
+.row {
+    display: flex;
+}
+
 .button-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     justify-content: center;
     align-items: center;
-}
-
-.row {
-    display: flex;
 }
 
 .button {
@@ -47,10 +47,10 @@ body {
     border: none;
     color: white;
     margin: 10px;
-    flex: 1;
     font-size: 36px;
     cursor: pointer;
     font-weight: bold;
+
 }
 
 .button.operator:hover {
