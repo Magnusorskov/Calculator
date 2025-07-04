@@ -158,5 +158,23 @@ buttons.forEach(button => {
             processCalculatorInput(text);
         }
     })
+})
 
+document.addEventListener("keydown", (e) => {
+    const digits = "0123456789.";
+    const operators = "=+-x";
+    let key = e.key;
+    if (digits.includes(key)) {
+        processCalculatorInput(key);
+    } else if (operators.includes(key)) {
+        processCalculatorInput(key);
+    } else if (key === "/") {
+        processCalculatorInput("÷")
+    } else if (key === "Enter") {
+        processCalculatorInput("=");
+    } else if (key === "Backspace") {
+        undo();
+    } else if (key === "Escape") {
+        allClear();
+    }
 })
